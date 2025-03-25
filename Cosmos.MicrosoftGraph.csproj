@@ -7,9 +7,9 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Company>Moonrise Software LLC</Company>
-		<Version>9.0.0.5</Version>
-		<AssemblyVersion>9.0.0.5</AssemblyVersion>
-		<FileVersion>9.0.0.5</FileVersion>
+		<Version>9.0.3.5</Version>
+		<AssemblyVersion>9.0.3.5</AssemblyVersion>
+		<FileVersion>9.0.3.5</FileVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<RepositoryUrl></RepositoryUrl>
@@ -41,15 +41,15 @@
 
 	<ItemGroup>
 
-		<PackageReference Include="Azure.Identity" Version="1.13.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+		<PackageReference Include="Azure.Identity" Version="1.13.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
 		<PackageReference Include="Microsoft.Graph.Beta" Version="5.78.0-preview" />
 
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
@@ -57,9 +57,9 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.3" />
 
-		<PackageReference Include="System.Text.Json" Version="9.0.0" />
+		<PackageReference Include="System.Text.Json" Version="9.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
