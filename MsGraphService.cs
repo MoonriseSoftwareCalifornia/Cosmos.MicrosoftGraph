@@ -16,7 +16,7 @@ namespace Cosmos.MicrosoftGraph
     /// This class is used to interact with the Microsoft Graph API. It is used to get the user's profile, the user's app roles, the user's member groups, and the user's groups.
     /// </summary>
     // SEE: https://damienbod.com/2021/09/06/using-azure-security-groups-in-asp-net-core-with-an-azure-b2c-identity-provider/
-    public class MsGraphService
+    public class MsGraphService : IMsGraphService
     {
         private static readonly string[] Scopes = "User.Read.All Group.Read.All GroupMember.Read.All Directory.Read.All".Split(' ');
         private readonly GraphServiceClient graphServiceClient;
@@ -36,11 +36,12 @@ namespace Cosmos.MicrosoftGraph
         /// <param name="configuration">App configuration.</param>
         public MsGraphService(IConfiguration configuration)
         {
-            var tenantId = configuration.GetValue<string>("AzureAd:TenantId");
 
-            // Values from app registration
-            var clientId = configuration.GetValue<string>("AzureAd:ClientId");
-            var clientSecret = configuration.GetValue<string>("AzureAd:ClientSecret");
+            var entraIdOAuth = configuration.GetSection("MicrosoftOAuth").Get<OAuth>();
+
+            var tenantId = entraIdOAuth?.TenantId ?? configuration.GetValue<string>("AzureAd:TenantId");
+            var clientId = entraIdOAuth?.ClientId ?? configuration.GetValue<string>("AzureAd:ClientId");
+            var clientSecret = entraIdOAuth?.ClientSecret ?? configuration.GetValue<string>("AzureAd:ClientSecret");
 
             var options = new TokenCredentialOptions
             {
