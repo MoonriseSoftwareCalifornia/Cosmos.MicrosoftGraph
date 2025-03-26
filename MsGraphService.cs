@@ -18,8 +18,8 @@ namespace Cosmos.MicrosoftGraph
     // SEE: https://damienbod.com/2021/09/06/using-azure-security-groups-in-asp-net-core-with-an-azure-b2c-identity-provider/
     public class MsGraphService
     {
+        private static readonly string[] Scopes = "User.Read.All Group.Read.All GroupMember.Read.All Directory.Read.All".Split(' ');
         private readonly GraphServiceClient graphServiceClient;
-        private readonly string? tenantId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MsGraphService"/> class.
@@ -36,8 +36,7 @@ namespace Cosmos.MicrosoftGraph
         /// <param name="configuration">App configuration.</param>
         public MsGraphService(IConfiguration configuration)
         {
-            string[] ? scopes = configuration.GetValue<string>("User.Read.All Group.Read.All GroupMember.Read.All Directory.Read.All")?.Split(' ');
-            tenantId = configuration.GetValue<string>("AzureAd:TenantId");
+            var tenantId = configuration.GetValue<string>("AzureAd:TenantId");
 
             // Values from app registration
             var clientId = configuration.GetValue<string>("AzureAd:ClientId");
@@ -52,7 +51,27 @@ namespace Cosmos.MicrosoftGraph
             var clientSecretCredential = new ClientSecretCredential(
                 tenantId, clientId, clientSecret, options);
 
-            graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
+            this.graphServiceClient = new GraphServiceClient(clientSecretCredential, Scopes);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MsGraphService"/> class.
+        /// </summary>
+        /// <param name="clientId">Client ID.</param>
+        /// <param name="clientSecret">Client Secret.</param>
+        /// <param name="tenantId">Tenant ID.</param>
+        public MsGraphService(string clientId, string clientSecret, string tenantId)
+        {
+            var options = new TokenCredentialOptions
+            {
+                AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+            };
+
+            // https://docs.microsoft.com/dotnet/api/azure.identity.clientsecretcredential
+            var clientSecretCredential = new ClientSecretCredential(
+                tenantId, clientId, clientSecret, options);
+
+            this.graphServiceClient = new GraphServiceClient(clientSecretCredential, Scopes);
         }
 
         /// <summary>
@@ -62,7 +81,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         public async Task<User?> GetGraphApiUser(string userId)
         {
-            return await graphServiceClient.Users[userId]
+            return await this.graphServiceClient.Users[userId]
                     .GetAsync(c => c.QueryParameters.Select = new[] { "Identities", "displayName" });
         }
 
@@ -73,7 +92,7 @@ namespace Cosmos.MicrosoftGraph
         public async Task<List<User>> GetUsersAsync()
         {
             var users = new List<User>();
-            var userCollectionResponse = await graphServiceClient.Users.GetAsync(c => c.QueryParameters.Select = new[] { "Identities", "displayName" });
+            var userCollectionResponse = await this.graphServiceClient.Users.GetAsync(c => c.QueryParameters.Select = new[] { "Identities", "displayName" });
 
             if (userCollectionResponse != null && userCollectionResponse.Value != null)
             {
@@ -90,7 +109,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>User role assignments.</returns>
         public async Task<AppRoleAssignmentCollectionResponse?> GetGraphApiUserAppRoles(string userId)
         {
-            return await graphServiceClient.Users[userId]
+            return await this.graphServiceClient.Users[userId]
                     .AppRoleAssignments
                     .GetAsync();
         }
@@ -102,7 +121,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         public async Task<List<Group>?> GetGraphApiUserMemberGroups(string userId)
         {
-            var groups = await graphServiceClient.Users[userId].MemberOf.GraphGroup.GetAsync();
+            var groups = await this.graphServiceClient.Users[userId].MemberOf.GraphGroup.GetAsync();
             return groups?.Value;
         }
 
@@ -112,7 +131,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         public async Task<List<Group>?> GetGroupsAsync()
         {
-            var groups = await graphServiceClient.Groups.GetAsync();
+            var groups = await this.graphServiceClient.Groups.GetAsync();
             return groups?.Value;
         }
 
@@ -123,7 +142,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         public async Task<Profile?> GetUserProfile(string userId)
         {
-            var result = await graphServiceClient.Users[userId].Profile.GetAsync();
+            var result = await this.graphServiceClient.Users[userId].Profile.GetAsync();
             return result;
         }
 
@@ -134,7 +153,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         public async Task<string?> GetGroupNameAsync(string groupId)
         {
-            var group = await graphServiceClient.Groups[groupId].GetAsync();
+            var group = await this.graphServiceClient.Groups[groupId].GetAsync();
             return group?.DisplayName;
         }
     }
