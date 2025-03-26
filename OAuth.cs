@@ -42,7 +42,7 @@ namespace Cosmos.MicrosoftGraph
         /// <returns>True means configuration is present.</returns>
         public virtual bool IsConfigured()
         {
-            return ClientId != string.Empty && ClientSecret != string.Empty;
+            return this.ClientId != string.Empty && this.ClientSecret != string.Empty;
         }
     }
 }

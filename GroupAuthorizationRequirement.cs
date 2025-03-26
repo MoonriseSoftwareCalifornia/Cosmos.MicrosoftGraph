@@ -21,7 +21,7 @@ namespace Cosmos.MicrosoftGraph
         /// <param name="groupName">Group display name.</param>
         public GroupAuthorizationRequirement(string groupName)
         {
-            GroupDisplayName = groupName;
+            this.GroupDisplayName = groupName;
         }
 
         /// <summary>

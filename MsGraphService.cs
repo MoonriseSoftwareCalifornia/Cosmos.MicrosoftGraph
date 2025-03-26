@@ -36,7 +36,6 @@ namespace Cosmos.MicrosoftGraph
         /// <param name="configuration">App configuration.</param>
         public MsGraphService(IConfiguration configuration)
         {
-
             var entraIdOAuth = configuration.GetSection("MicrosoftOAuth").Get<OAuth>();
 
             var tenantId = entraIdOAuth?.TenantId ?? configuration.GetValue<string>("AzureAd:TenantId");

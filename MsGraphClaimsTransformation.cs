@@ -44,7 +44,7 @@ namespace Cosmos.MicrosoftGraph
 
                 if (objectIdentifier != null)
                 {
-                    var groups = await msGraphService.GetGraphApiUserMemberGroups(objectIdentifier.Value);
+                    var groups = await this.msGraphService.GetGraphApiUserMemberGroups(objectIdentifier.Value);
 
                     if (groups != null)
                     {
