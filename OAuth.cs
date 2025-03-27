@@ -10,7 +10,7 @@ namespace Cosmos.MicrosoftGraph
     /// <summary>
     /// Microsoft Entra ID OAUth App Authentication.
     /// </summary>
-    public class OAuth
+    internal class OAuth
     {
         /// <summary>
         /// Gets or sets the client Id (Application Id) of the app.

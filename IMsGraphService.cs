@@ -56,6 +56,13 @@ namespace Cosmos.MicrosoftGraph
         Task<Profile?> GetUserProfile(string userId);
 
         /// <summary>
+        /// Gets a users by email address.
+        /// </summary>
+        /// <param name="emailAddress">Email address to search.</param>
+        /// <returns>List of users (hopefully only one).</returns>
+        Task<List<User>?> GetGraphUserByEmailAddress(string emailAddress);
+
+        /// <summary>
         /// Gets a list of users.
         /// </summary>
         /// <returns>List of users.</returns>

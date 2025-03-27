@@ -18,7 +18,7 @@ namespace Cosmos.MicrosoftGraph
     // SEE: https://damienbod.com/2021/09/06/using-azure-security-groups-in-asp-net-core-with-an-azure-b2c-identity-provider/
     public class MsGraphService : IMsGraphService
     {
-        private static readonly string[] Scopes = "User.Read.All Group.Read.All GroupMember.Read.All Directory.Read.All".Split(' ');
+        private static readonly string[] Scopes = { "https://graph.microsoft.com/.default" };
         private readonly GraphServiceClient graphServiceClient;
 
         /// <summary>
@@ -83,6 +83,18 @@ namespace Cosmos.MicrosoftGraph
         {
             return await this.graphServiceClient.Users[userId]
                     .GetAsync(c => c.QueryParameters.Select = new[] { "Identities", "displayName" });
+        }
+
+        /// <summary>
+        /// Gets the user's object from the Microsoft Graph API by email address.
+        /// </summary>
+        /// <param name="emailAddress">Email address to search.</param>
+        /// <returns>List<User>.</returns>
+        public async Task<List<User>?> GetGraphUserByEmailAddress(string emailAddress)
+        {
+            var response = await this.graphServiceClient.Users
+                .GetAsync(a => a.QueryParameters.Filter = $"mail eq '{emailAddress}'");
+            return response?.Value;
         }
 
         /// <summary>
